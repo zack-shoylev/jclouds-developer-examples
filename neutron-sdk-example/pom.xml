@@ -20,6 +20,8 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Allows this example to use jclouds resources to implement a SDK -->
     <parent>
         <groupId>org.apache.jclouds</groupId>
         <artifactId>jclouds-project</artifactId>
@@ -29,7 +31,7 @@
 
     <groupId>org.rackspace</groupId>
     <artifactId>neutron-sdk-example</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>jclouds neutron-sdk-example api</name>
     <description>An example for jclouds SDK developers that uses parts of the Openstack Neutron implementation
     </description>
@@ -43,6 +45,7 @@
         <test.jclouds.keystone.credential-type>passwordCredentials</test.jclouds.keystone.credential-type>
     </properties>
 
+    <!-- Access to jclouds snapshot repos -->
     <repositories>
         <repository>
             <id>apache-snapshots</id>
@@ -67,6 +70,8 @@
             <artifactId>jclouds-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <!-- The following dependencies are only used in the tests -->
         <dependency>
             <groupId>org.apache.jclouds</groupId>
             <artifactId>jclouds-core</artifactId>
@@ -98,47 +103,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>live</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>integration</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                                <configuration>
-                                    <systemPropertyVariables>
-                                        <test.neutron-sdk-example.endpoint>${test.neutron-sdk-example.endpoint}
-                                        </test.neutron-sdk-example.endpoint>
-                                        <test.neutron-sdk-example.api-version>${test.neutron-sdk-example.api-version}
-                                        </test.neutron-sdk-example.api-version>
-                                        <test.neutron-sdk-example.build-version>
-                                            ${test.neutron-sdk-example.build-version}
-                                        </test.neutron-sdk-example.build-version>
-                                        <test.neutron-sdk-example.identity>${test.neutron-sdk-example.identity}
-                                        </test.neutron-sdk-example.identity>
-                                        <test.neutron-sdk-example.credential>${test.neutron-sdk-example.credential}
-                                        </test.neutron-sdk-example.credential>
-                                        <test.jclouds.keystone.credential-type>
-                                            ${test.jclouds.keystone.credential-type}
-                                        </test.jclouds.keystone.credential-type>
-                                    </systemPropertyVariables>
-                                    <parallel>classes</parallel>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
