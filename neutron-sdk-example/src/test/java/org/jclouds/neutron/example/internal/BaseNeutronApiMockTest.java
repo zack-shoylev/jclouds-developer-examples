@@ -14,21 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2;
+package org.jclouds.neutron.example.internal;
 
-import org.jclouds.View;
-import org.jclouds.apis.internal.BaseApiMetadataTest;
-import org.testng.annotations.Test;
+import static org.jclouds.openstack.keystone.v2_0.config.KeystoneProperties.CREDENTIAL_TYPE;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.reflect.TypeToken;
+import java.util.Properties;
+
+import org.jclouds.openstack.keystone.v2_0.config.CredentialTypes;
+import org.jclouds.neutron.example.NeutronApi;
+import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 
 /**
- * The Neutron metadata test.
+ * Base class for writing Neutron Mock tests
  */
-@Test(groups = "unit", testName = "NeutronApiMetadataTest")
-public class NeutronApiMetadataTest extends BaseApiMetadataTest {
-   public NeutronApiMetadataTest() {
-      super(new NeutronApiMetadata(), ImmutableSet.<TypeToken<? extends View>>of());
+public class BaseNeutronApiMockTest extends BaseOpenStackMockTest<NeutronApi> {
+   protected Properties overrides;
+
+   /**
+    * Base Mock Test
+    */
+   public BaseNeutronApiMockTest() {
+      overrides = new Properties();
+      overrides.setProperty(CREDENTIAL_TYPE, CredentialTypes.PASSWORD_CREDENTIALS);
    }
 }

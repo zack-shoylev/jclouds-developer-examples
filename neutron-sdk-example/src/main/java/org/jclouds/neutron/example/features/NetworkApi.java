@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2.features;
+package org.jclouds.neutron.example.features;
 
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 import org.jclouds.Fallbacks;
 import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.openstack.keystone.v2_0.filters.AuthenticateRequest;
-import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.neutron.example.domain.Network;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.RequestFilters;
 import org.jclouds.rest.annotations.SelectJson;

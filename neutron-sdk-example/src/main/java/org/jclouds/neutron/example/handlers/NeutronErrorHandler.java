@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2.handlers;
+package org.jclouds.neutron.example.handlers;
 
 import static org.jclouds.http.HttpUtils.closeClientButKeepContentStream;
 

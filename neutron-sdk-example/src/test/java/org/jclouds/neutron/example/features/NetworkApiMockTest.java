@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2.features;
+package org.jclouds.neutron.example.features;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -25,11 +25,11 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
-import org.jclouds.openstack.neutron.v2.domain.NetworkType;
-import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
+import org.jclouds.neutron.example.NeutronApi;
+import org.jclouds.neutron.example.domain.Network;
+import org.jclouds.neutron.example.domain.NetworkStatus;
+import org.jclouds.neutron.example.domain.NetworkType;
+import org.jclouds.neutron.example.internal.BaseNeutronApiMockTest;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
 

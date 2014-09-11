@@ -15,45 +15,24 @@
  * limitations under the License.
  */
 
-package org.jclouds.openstack.neutron.v2.domain;
+package org.jclouds.neutron.example.domain;
 
 /**
- * Enumerates supported Network types.
+ * Enumerates Network Status.
  */
-public enum NetworkType {
-   /**
-    * Used to describe a local network.
-    */
-   LOCAL("local"),
-   /**
-    * Used to describe a flat network.
-    */
-   FLAT("flat"),
-   /**
-    * Used to describe a VLAN network. NetworkSegment might have to be set.
-    */
-   VLAN("vlan"),
-   /**
-    * Used to describe a Virtual Extensible LAN (VXLAN) network.
-    * It uses a VLAN-like encapsulation technique to encapsulate MAC-based
-    * OSI layer 2 Ethernet frames within layer 4 UDP packets.
-    */
-   VXLAN("vxlan"),
-   /**
-    * Used to describe a GRE tunnel network. A virtual network realized as
-    * packets encapsulated using Generic Routing Encapsulation. GRE tunnel
-    * packets are routed by the compute node hosts, so GRE tunnels are not
-    * associated by the openvswitch plugin with specific physical networks.
-    */
-   GRE("gre"),
+public enum NetworkStatus {
+   ACTIVE("active"),
+   DOWN("down"),
+   BUILD("build"),
+   ERROR("error"),
    /**
     * Used by jclouds when the service returns an unknown value other than null.
     */
    UNRECOGNIZED("unrecognized");
 
-   private String name;
+   private final String name;
 
-   private NetworkType(String name) {
+   private NetworkStatus(String name) {
       this.name = name;
    }
 
@@ -62,9 +41,9 @@ public enum NetworkType {
     * @param name The string representation of this enum value.
     * @return The corresponding enum value.
     */
-   public static NetworkType fromValue(String name) {
+   public static NetworkStatus fromValue(String name) {
       if (name != null) {
-         for (NetworkType value : NetworkType.values()) {
+         for (NetworkStatus value : NetworkStatus.values()) {
             if (name.equalsIgnoreCase(value.name)) {
                return value;
             }
@@ -76,6 +55,6 @@ public enum NetworkType {
 
    @Override
    public String toString() {
-      return name;
+      return name();
    }
 }

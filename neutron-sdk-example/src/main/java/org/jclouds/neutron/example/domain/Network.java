@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2.domain;
+package org.jclouds.neutron.example.domain;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -52,7 +52,7 @@ public class Network {
    private NetworkType networkType;
 
    @ConstructorProperties(
-         { "id", "status", "subnets", "name", "admin_state_up", "shared", "tenant_id", "network_type" })
+         { "id", "status", "subnets", "name", "admin_state_up", "shared", "tenant_id", "provider:network_type" })
    private Network(String id, NetworkStatus status, ImmutableSet<String> subnets, String name, Boolean adminStateUp,
          Boolean shared, String tenantId, NetworkType networkType) {
       // No checkNotNulls. With Neutron, any of these properties can be left null when used in an update.

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2.config;
+package org.jclouds.neutron.example.config;
 
 import java.net.URI;
 import java.util.Set;
@@ -29,8 +29,8 @@ import org.jclouds.http.annotation.Redirection;
 import org.jclouds.http.annotation.ServerError;
 import org.jclouds.json.config.GsonModule.DateAdapter;
 import org.jclouds.json.config.GsonModule.Iso8601DateAdapter;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.handlers.NeutronErrorHandler;
+import org.jclouds.neutron.example.NeutronApi;
+import org.jclouds.neutron.example.handlers.NeutronErrorHandler;
 import org.jclouds.openstack.v2_0.domain.Extension;
 import org.jclouds.openstack.v2_0.functions.PresentWhenExtensionAnnotationNamespaceEqualsAnyNamespaceInExtensionsSet;
 import org.jclouds.rest.ConfiguresHttpApi;

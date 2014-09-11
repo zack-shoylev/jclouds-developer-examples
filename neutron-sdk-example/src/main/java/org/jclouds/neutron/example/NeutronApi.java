@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jclouds.openstack.neutron.v2;
+package org.jclouds.neutron.example;
 
 import java.io.Closeable;
 import java.util.Set;
@@ -24,7 +24,7 @@ import javax.ws.rs.Path;
 import org.jclouds.Constants;
 import org.jclouds.location.Region;
 import org.jclouds.location.functions.RegionToEndpoint;
-import org.jclouds.openstack.neutron.v2.features.NetworkApi;
+import org.jclouds.neutron.example.features.NetworkApi;
 import org.jclouds.openstack.v2_0.features.ExtensionApi;
 import org.jclouds.rest.annotations.Delegate;
 import org.jclouds.rest.annotations.EndpointParam;
