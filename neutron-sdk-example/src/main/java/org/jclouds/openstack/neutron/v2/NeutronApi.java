@@ -22,20 +22,13 @@ import java.util.Set;
 import javax.ws.rs.Path;
 
 import org.jclouds.Constants;
-
 import org.jclouds.location.Region;
 import org.jclouds.location.functions.RegionToEndpoint;
-import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
-import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
-import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
-import org.jclouds.openstack.neutron.v2.features.PortApi;
-import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.jclouds.openstack.v2_0.features.ExtensionApi;
 import org.jclouds.rest.annotations.Delegate;
 import org.jclouds.rest.annotations.EndpointParam;
 
-import com.google.common.base.Optional;
 import com.google.inject.Provides;
 
 /**
@@ -61,46 +54,4 @@ public interface NeutronApi extends Closeable {
     */
    @Delegate
    NetworkApi getNetworkApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
-
-   /**
-    * Provides access to Subnet features.
-    */
-   @Delegate
-   SubnetApi getSubnetApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
-
-   /**
-    * Provides access to Port features.
-    */
-   @Delegate
-   PortApi getPortApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
-
-   /**
-    * Provides access to Router features.
-    *
-    * <h3>NOTE</h3>
-    * This API is an extension that may or may not be present in your OpenStack cloud. Use the Optional return type
-    * to determine if it is present.
-    */
-   @Delegate
-   Optional<RouterApi> getRouterApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
-
-   /**
-    * Provides access to Floating IP features.
-    *
-    * <h3>NOTE</h3>
-    * This API is an extension that may or may not be present in your OpenStack cloud. Use the Optional return type
-    * to determine if it is present.
-    */
-   @Delegate
-   Optional<FloatingIPApi> getFloatingIPApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
-
-   /**
-    * Provides access to SecurityGroup features.
-    *
-    * <h3>NOTE</h3>
-    * This API is an extension that may or may not be present in your OpenStack cloud. Use the Optional return type
-    * to determine if it is present.
-    */
-   @Delegate
-   Optional<SecurityGroupApi> getSecurityGroupApi(@EndpointParam(parser = RegionToEndpoint.class) String region);
 }

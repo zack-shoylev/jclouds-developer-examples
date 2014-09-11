@@ -43,27 +43,27 @@
     </appender>
 
     <root>
-        <level value="warn" />
+        <level value="warn"/>
     </root>
 
     <logger name="org.jclouds">
-        <level value="DEBUG" />
-        <appender-ref ref="FILE" />
+        <level value="DEBUG"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
     <logger name="jclouds.wire">
-        <level value="DEBUG" />
-        <appender-ref ref="WIREFILE" />
+        <level value="DEBUG"/>
+        <appender-ref ref="WIREFILE"/>
     </logger>
 
     <logger name="jclouds.headers">
-        <level value="DEBUG" />
-        <appender-ref ref="WIREFILE" />
+        <level value="DEBUG"/>
+        <appender-ref ref="WIREFILE"/>
     </logger>
 
     <logger name="jclouds.blobstore">
-        <level value="DEBUG" />
-        <appender-ref ref="BLOBSTOREFILE" />
+        <level value="DEBUG"/>
+        <appender-ref ref="BLOBSTOREFILE"/>
     </logger>
 
 </configuration>

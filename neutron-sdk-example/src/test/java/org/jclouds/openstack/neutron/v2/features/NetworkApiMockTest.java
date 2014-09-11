@@ -16,33 +16,30 @@
  */
 package org.jclouds.openstack.neutron.v2.features;
 
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
-import org.jclouds.openstack.neutron.v2.domain.NetworkType;
-import org.jclouds.openstack.neutron.v2.domain.Networks;
-import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
-import org.jclouds.openstack.v2_0.options.PaginationOptions;
-import org.jclouds.rest.ResourceNotFoundException;
-import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
+import org.jclouds.openstack.neutron.v2.domain.NetworkType;
+import org.jclouds.openstack.neutron.v2.internal.BaseNeutronApiMockTest;
+import org.jclouds.rest.ResourceNotFoundException;
+import org.testng.annotations.Test;
+
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+import com.squareup.okhttp.mockwebserver.MockResponse;
+import com.squareup.okhttp.mockwebserver.MockWebServer;
+
 /**
  * Tests NetworkApi Guice wiring and parsing
- *
  */
 @Test
 public class NetworkApiMockTest extends BaseNeutronApiMockTest {
@@ -50,7 +47,8 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    public void testCreateNetwork() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_create_response.json"))));
+      server.enqueue(addCommonHeaders(
+            new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_create_response.json"))));
 
       try {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
@@ -86,7 +84,8 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    public void testCreateNetworkFail() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404).setBody(stringFromResource("/network_create_response.json"))));
+      server.enqueue(addCommonHeaders(
+            new MockResponse().setResponseCode(404).setBody(stringFromResource("/network_create_response.json"))));
 
       try {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
@@ -102,128 +101,11 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
       }
    }
 
-   public void testListSpecificPageNetwork() throws IOException, InterruptedException, URISyntaxException {
-      MockWebServer server = mockOpenStackServer();
-      server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/network_list_response_paged1.json"))));
-
-      try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
-         NetworkApi api = neutronApi.getNetworkApi("RegionOne");
-
-         Networks networks = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
-
-         /*
-          * Check request
-          */
-         assertAuthentication(server);
-         assertRequest(server.takeRequest(), "GET", "/v2.0/networks?limit=2&marker=abcdefg");
-
-         /*
-          * Check response
-          */
-         assertNotNull(networks);
-         assertEquals(networks.first().get().getId(), "396f12f8-521e-4b91-8e21-2e003500433a");
-      } finally {
-         server.shutdown();
-      }
-   }
-
-   // These fail tests uncover issues with the fallback annotations.
-   public void testListSpecificPageNetworkFail() throws IOException, InterruptedException, URISyntaxException {
-      MockWebServer server = mockOpenStackServer();
-      server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404).setBody(stringFromResource("/network_list_response_paged1.json"))));
-
-      try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
-         NetworkApi api = neutronApi.getNetworkApi("RegionOne");
-
-         Networks networks = api.list(PaginationOptions.Builder.limit(2).marker("abcdefg"));
-
-         /*
-          * Check request
-          */
-         assertAuthentication(server);
-         assertRequest(server.takeRequest(), "GET", "/v2.0/networks?limit=2&marker=abcdefg");
-
-         /*
-          * Check response
-          */
-         assertTrue(networks.isEmpty());
-      } finally {
-         server.shutdown();
-      }
-   }
-
-   public void testListPagedNetwork() throws IOException, InterruptedException, URISyntaxException {
-      MockWebServer server = mockOpenStackServer();
-      server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/network_list_response_paged1.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/network_list_response_paged2.json"))));
-
-      try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
-         NetworkApi api = neutronApi.getNetworkApi("RegionOne");
-
-         // Note: Lazy! Have to actually look at the collection.
-         List<Network> networks = api.list().concat().toList();
-         assertEquals(networks.size(), 4);
-         // look at last element
-         assertEquals(networks.get(3).getId(), "71c1e68c-171a-4aa2-aca5-50ea153a3718_2");
-
-         /*
-          * Check request
-          */
-         assertEquals(server.getRequestCount(), 3);
-         assertAuthentication(server);
-         assertRequest(server.takeRequest(), "GET", "/v2.0/networks");
-         assertRequest(server.takeRequest(), "GET", "/v2.0/networks?marker=71c1e68c-171a-4aa2-aca5-50ea153a3718");
-
-         /*
-          * Check response
-          */
-         assertNotNull(networks);
-         assertEquals(networks.get(0).getId(), "396f12f8-521e-4b91-8e21-2e003500433a");
-         assertEquals(networks.get(3).getId(), "71c1e68c-171a-4aa2-aca5-50ea153a3718_2");
-      } finally {
-         server.shutdown();
-      }
-   }
-
-   public void testListPagedNetworkFail() throws IOException, InterruptedException, URISyntaxException {
-      MockWebServer server = mockOpenStackServer();
-      server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404).setBody(stringFromResource("/network_list_response_paged1.json"))));
-
-      try {
-         NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
-         NetworkApi api = neutronApi.getNetworkApi("RegionOne");
-
-         // Note: Lazy! Have to actually look at the collection.
-         List<Network> networks = api.list().concat().toList();
-
-
-         /*
-          * Check request
-          */
-         assertEquals(server.getRequestCount(), 2);
-         assertAuthentication(server);
-         assertRequest(server.takeRequest(), "GET", "/v2.0/networks");
-
-         /*
-          * Check response
-          */
-         assertTrue(networks.isEmpty());
-      } finally {
-         server.shutdown();
-      }
-   }
-
    public void testGetNetwork() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(200).setBody(stringFromResource("/network_get_response.json"))));
+      server.enqueue(addCommonHeaders(
+            new MockResponse().setResponseCode(200).setBody(stringFromResource("/network_get_response.json"))));
 
       try {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
@@ -279,7 +161,8 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    public void testCreateNetworkBulk() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_bulk_create_response.json"))));
+      server.enqueue(addCommonHeaders(
+            new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_bulk_create_response.json"))));
 
       try {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
@@ -349,7 +232,8 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    public void testUpdateNetwork() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
-      server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_update_response.json"))));
+      server.enqueue(addCommonHeaders(
+            new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_update_response.json"))));
 
       try {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);

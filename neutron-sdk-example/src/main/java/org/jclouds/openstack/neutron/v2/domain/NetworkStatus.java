@@ -36,11 +36,6 @@ public enum NetworkStatus {
       this.name = name;
    }
 
-   @Override
-   public String toString() {
-      return name();
-   }
-
    /*
     * This provides GSON enum support in jclouds.
     * @param name The string representation of this enum value.
@@ -49,12 +44,17 @@ public enum NetworkStatus {
    public static NetworkStatus fromValue(String name) {
       if (name != null) {
          for (NetworkStatus value : NetworkStatus.values()) {
-           if (name.equalsIgnoreCase(value.name)) {
-             return value;
-           }
+            if (name.equalsIgnoreCase(value.name)) {
+               return value;
+            }
          }
          return UNRECOGNIZED;
-       }
-       return null;
+      }
+      return null;
+   }
+
+   @Override
+   public String toString() {
+      return name();
    }
 }

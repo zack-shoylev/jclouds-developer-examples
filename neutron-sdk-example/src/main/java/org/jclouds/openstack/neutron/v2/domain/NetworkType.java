@@ -57,11 +57,6 @@ public enum NetworkType {
       this.name = name;
    }
 
-   @Override
-   public String toString() {
-      return name;
-   }
-
    /*
     * This provides GSON enum support in jclouds.
     * @param name The string representation of this enum value.
@@ -70,12 +65,17 @@ public enum NetworkType {
    public static NetworkType fromValue(String name) {
       if (name != null) {
          for (NetworkType value : NetworkType.values()) {
-           if (name.equalsIgnoreCase(value.name)) {
-             return value;
-           }
+            if (name.equalsIgnoreCase(value.name)) {
+               return value;
+            }
          }
          return UNRECOGNIZED;
-       }
-       return null;
+      }
+      return null;
+   }
+
+   @Override
+   public String toString() {
+      return name;
    }
 }

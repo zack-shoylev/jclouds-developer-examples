@@ -16,12 +16,13 @@
  */
 package org.jclouds.openstack.neutron.v2.config;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.google.inject.Provides;
+import java.net.URI;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import org.jclouds.http.HttpErrorHandler;
 import org.jclouds.http.annotation.ClientError;
 import org.jclouds.http.annotation.Redirection;
@@ -36,15 +37,15 @@ import org.jclouds.rest.ConfiguresHttpApi;
 import org.jclouds.rest.config.HttpApiModule;
 import org.jclouds.rest.functions.ImplicitOptionalConverter;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-import java.net.URI;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.google.inject.Provides;
 
 /**
  * Configures the Neutron connection.
- *
  */
 @ConfiguresHttpApi
 public class NeutronHttpApiModule extends HttpApiModule<NeutronApi> {
@@ -52,20 +53,22 @@ public class NeutronHttpApiModule extends HttpApiModule<NeutronApi> {
    @Override
    protected void configure() {
       bind(DateAdapter.class).to(Iso8601DateAdapter.class);
-      bind(ImplicitOptionalConverter.class).to(PresentWhenExtensionAnnotationNamespaceEqualsAnyNamespaceInExtensionsSet.class);
+      bind(ImplicitOptionalConverter.class)
+            .to(PresentWhenExtensionAnnotationNamespaceEqualsAnyNamespaceInExtensionsSet.class);
       super.configure();
    }
 
    @Provides
    @Singleton
    public Multimap<URI, URI> aliases() {
-       return ImmutableMultimap.<URI, URI>builder()
-          .build();
+      return ImmutableMultimap.<URI, URI>builder()
+            .build();
    }
 
    @Provides
    @Singleton
-   public LoadingCache<String, Set<? extends Extension>> provideExtensionsByRegion(final Provider<NeutronApi> neutronApi) {
+   public LoadingCache<String, Set<? extends Extension>> provideExtensionsByRegion(
+         final Provider<NeutronApi> neutronApi) {
       return CacheBuilder.newBuilder().expireAfterWrite(23, TimeUnit.HOURS)
             .build(new CacheLoader<String, Set<? extends Extension>>() {
                @Override

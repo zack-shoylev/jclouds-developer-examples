@@ -26,16 +26,15 @@ import org.jclouds.openstack.v2_0.internal.BaseOpenStackMockTest;
 
 /**
  * Base class for writing Neutron Mock tests
- *
  */
 public class BaseNeutronApiMockTest extends BaseOpenStackMockTest<NeutronApi> {
    protected Properties overrides;
+
    /**
     * Base Mock Test
     */
    public BaseNeutronApiMockTest() {
       overrides = new Properties();
-      //overrides.setProperty(SERVICE_TYPE, "neutron");
       overrides.setProperty(CREDENTIAL_TYPE, CredentialTypes.PASSWORD_CREDENTIALS);
    }
 }

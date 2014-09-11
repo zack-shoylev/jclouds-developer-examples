@@ -16,27 +16,6 @@
  */
 package org.jclouds.openstack.neutron.v2.features;
 
-import com.google.common.annotations.Beta;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import org.jclouds.Fallbacks;
-import org.jclouds.Fallbacks.EmptyPagedIterableOnNotFoundOr404;
-import org.jclouds.collect.PagedIterable;
-import org.jclouds.javax.annotation.Nullable;
-import org.jclouds.openstack.keystone.v2_0.filters.AuthenticateRequest;
-import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.Networks;
-import org.jclouds.openstack.neutron.v2.fallbacks.EmptyNetworksFallback;
-import org.jclouds.openstack.neutron.v2.functions.NetworksToPagedIterable;
-import org.jclouds.openstack.neutron.v2.functions.ParseNetworks;
-import org.jclouds.openstack.v2_0.options.PaginationOptions;
-import org.jclouds.rest.annotations.Fallback;
-import org.jclouds.rest.annotations.RequestFilters;
-import org.jclouds.rest.annotations.ResponseParser;
-import org.jclouds.rest.annotations.SelectJson;
-import org.jclouds.rest.annotations.Transform;
-import org.jclouds.rest.annotations.WrapWith;
-
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -48,6 +27,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jclouds.Fallbacks;
+import org.jclouds.javax.annotation.Nullable;
+import org.jclouds.openstack.keystone.v2_0.filters.AuthenticateRequest;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.rest.annotations.Fallback;
+import org.jclouds.rest.annotations.RequestFilters;
+import org.jclouds.rest.annotations.SelectJson;
+import org.jclouds.rest.annotations.WrapWith;
+
+import com.google.common.annotations.Beta;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+
 /**
  * Provides access to Network operations for the OpenStack Networking (Neutron) v2 API.
  * <p/>
@@ -55,7 +47,7 @@ import javax.ws.rs.core.MediaType;
  * tenant. A tenant can create several ports for a network, and plug virtual interfaces into these ports.
  *
  * @see <a href=
- *      "http://docs.openstack.org/api/openstack-network/2.0/content/Networks.html">api doc</a>
+ * "http://docs.openstack.org/api/openstack-network/2.0/content/Networks.html">api doc</a>
  */
 @Beta
 @Path("/networks")
@@ -63,27 +55,6 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface NetworkApi {
-
-   /**
-    * Returns all networks currently defined in Neutron for the current tenant.
-    *
-    * @return the list of all networks configured for the tenant
-    */
-   @Named("network:list")
-   @GET
-   @ResponseParser(ParseNetworks.class)
-   @Transform(NetworksToPagedIterable.class)
-   @Fallback(EmptyPagedIterableOnNotFoundOr404.class)
-   PagedIterable<Network> list();
-
-   /**
-    * @see <a href="http://docs.openstack.org/api/openstack-network/2.0/content/pagination.html">api doc</a>
-    */
-   @Named("network:list")
-   @GET
-   @ResponseParser(ParseNetworks.class)
-   @Fallback(EmptyNetworksFallback.class)
-   Networks list(PaginationOptions options);
 
    /**
     * Return a specific network
@@ -124,7 +95,7 @@ public interface NetworkApi {
    /**
     * Update a network
     *
-    * @param id the id of the network to update
+    * @param id      the id of the network to update
     * @param network the network to update
     * @return true if update successful, false if not
     */

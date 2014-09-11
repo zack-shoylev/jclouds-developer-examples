@@ -36,14 +36,8 @@ import com.google.inject.Module;
 
 /**
  * Implementation of {@link org.jclouds.apis.ApiMetadata} for Neutron 2.0 API
- *
  */
 public class NeutronApiMetadata extends BaseHttpApiMetadata<NeutronApi> {
-
-   @Override
-   public Builder toBuilder() {
-      return new Builder().fromApiMetadata(this);
-   }
 
    public NeutronApiMetadata() {
       this(new Builder());
@@ -60,24 +54,29 @@ public class NeutronApiMetadata extends BaseHttpApiMetadata<NeutronApi> {
       return properties;
    }
 
+   @Override
+   public Builder toBuilder() {
+      return new Builder().fromApiMetadata(this);
+   }
+
    public static class Builder extends BaseHttpApiMetadata.Builder<NeutronApi, Builder> {
 
       protected Builder() {
          super(NeutronApi.class);
          id("openstack-neutron")
-            .name("OpenStack Neutron API")
-            .identityName("${tenantName}:${userName} or ${userName}, if your keystone supports a default tenant")
-            .credentialName("${password}")
-            .endpointName("Neutron base url ending in /v2.0/")
-            .documentation(URI.create("http://docs.openstack.org/api/openstack-network/2.0/content/"))
-            .version("v2.0")
-            .defaultEndpoint("http://localhost:5000/v2.0/")
-            .defaultProperties(NeutronApiMetadata.defaultProperties())
-            .defaultModules(ImmutableSet.<Class<? extends Module>>builder()
-               .add(AuthenticationApiModule.class)
-               .add(KeystoneAuthenticationModule.class)
-               .add(RegionModule.class)
-               .add(NeutronHttpApiModule.class).build());
+               .name("OpenStack Neutron API")
+               .identityName("${tenantName}:${userName} or ${userName}, if your keystone supports a default tenant")
+               .credentialName("${password}")
+               .endpointName("Neutron base url ending in /v2.0/")
+               .documentation(URI.create("http://docs.openstack.org/api/openstack-network/2.0/content/"))
+               .version("v2.0")
+               .defaultEndpoint("http://localhost:5000/v2.0/")
+               .defaultProperties(NeutronApiMetadata.defaultProperties())
+               .defaultModules(ImmutableSet.<Class<? extends Module>>builder()
+                     .add(AuthenticationApiModule.class)
+                     .add(KeystoneAuthenticationModule.class)
+                     .add(RegionModule.class)
+                     .add(NeutronHttpApiModule.class).build());
       }
 
       @Override
