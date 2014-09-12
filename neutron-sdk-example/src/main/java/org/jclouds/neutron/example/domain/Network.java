@@ -16,8 +16,6 @@
  */
 package org.jclouds.neutron.example.domain;
 
-import javax.inject.Named;
-
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -30,17 +28,16 @@ import com.google.common.collect.ImmutableSet;
 public class Network {
 
    private String id;
-   private NetworkStatus status;
+   // Enumerable
+   private String status;
    private ImmutableSet<String> subnets;
 
    private String name;
-   @Named("admin_state_up")
    private Boolean adminStateUp;
    private Boolean shared;
-   @Named("tenant_id")
    private String tenantId;
 
-   @Named("provider:network_type")
-   private NetworkType networkType;
+   // Enumerable
+   private String networkType;
 
 }
