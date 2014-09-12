@@ -16,29 +16,15 @@
  */
 package org.jclouds.neutron.example.features;
 
-import javax.inject.Named;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.jclouds.Fallbacks;
-import org.jclouds.javax.annotation.Nullable;
 import org.jclouds.openstack.keystone.v2_0.filters.AuthenticateRequest;
-import org.jclouds.neutron.example.domain.Network;
-import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.RequestFilters;
-import org.jclouds.rest.annotations.SelectJson;
-import org.jclouds.rest.annotations.WrapWith;
 
 import com.google.common.annotations.Beta;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Provides access to Network operations for the OpenStack Networking (Neutron) v2 API.
@@ -56,66 +42,4 @@ import com.google.common.collect.ImmutableList;
 @Produces(MediaType.APPLICATION_JSON)
 public interface NetworkApi {
 
-   /**
-    * Return a specific network
-    *
-    * @param id the id of the network to return
-    * @return Network or null if not found
-    */
-   @Named("network:get")
-   @GET
-   @Path("/{id}")
-   @SelectJson("network")
-   @Fallback(Fallbacks.NullOnNotFoundOr404.class)
-   @Nullable
-   Network get(@PathParam("id") String id);
-
-   /**
-    * Create a new network with the specified type
-    *
-    * @param network Describes the network to be created.
-    * @return a reference of the newly-created network
-    */
-   @Named("network:create")
-   @POST
-   @SelectJson("network")
-   Network create(@WrapWith("network") Network.CreateOptions network);
-
-   /**
-    * Create multiple networks
-    *
-    * @param networks the bulk of networks to create
-    * @return list of references of the newly-created networks
-    */
-   @Named("network:createBulk")
-   @POST
-   @SelectJson("networks")
-   FluentIterable<Network> createBulk(@WrapWith("networks") ImmutableList<Network.CreateOptions> networks);
-
-   /**
-    * Update a network
-    *
-    * @param id      the id of the network to update
-    * @param network the network to update
-    * @return true if update successful, false if not
-    */
-   @Named("network:update")
-   @PUT
-   @Path("/{id}")
-   @SelectJson("network")
-   @Fallback(Fallbacks.NullOnNotFoundOr404.class)
-   @Nullable
-   Network update(@PathParam("id") String id, @WrapWith("network") Network.UpdateOptions network);
-
-   /**
-    * Deletes the specified network
-    *
-    * @param id the id of the network to delete
-    * @return true if delete was successful, false if not
-    */
-   @Named("network:delete")
-   @DELETE
-   @Path("/{id}")
-   @Fallback(Fallbacks.FalseOnNotFoundOr404.class)
-   boolean delete(@PathParam("id") String id);
 }
