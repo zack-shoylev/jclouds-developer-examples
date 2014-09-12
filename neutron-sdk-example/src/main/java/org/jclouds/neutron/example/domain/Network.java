@@ -29,7 +29,7 @@ public class Network {
 
    private String id;
    // Enumerable
-   private String status;
+   private NetworkStatus status;
    private ImmutableSet<String> subnets;
 
    private String name;
