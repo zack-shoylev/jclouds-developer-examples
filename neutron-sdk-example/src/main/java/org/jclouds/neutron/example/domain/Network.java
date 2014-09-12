@@ -16,8 +16,6 @@
  */
 package org.jclouds.neutron.example.domain;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.beans.ConstructorProperties;
 
 import javax.inject.Named;
@@ -86,20 +84,6 @@ public class Network {
             network.shared,
             network.tenantId,
             network.networkType);
-   }
-
-   /**
-    * @return the Builder for creating a new Router
-    */
-   public static CreateBuilder createOptions(String name) {
-      return new CreateBuilder(name);
-   }
-
-   /**
-    * @return the Builder for updating a Router
-    */
-   public static UpdateBuilder updateOptions() {
-      return new UpdateBuilder();
    }
 
    /**
