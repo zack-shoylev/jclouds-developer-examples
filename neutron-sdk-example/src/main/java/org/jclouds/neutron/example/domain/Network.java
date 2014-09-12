@@ -16,10 +16,16 @@
  */
 package org.jclouds.neutron.example.domain;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.beans.ConstructorProperties;
 
 import javax.inject.Named;
 
+import org.jclouds.javax.annotation.Nullable;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -36,7 +42,6 @@ public class Network {
    private ImmutableSet<String> subnets;
 
    private String name;
-   // GSON uses @Named when serializing
    @Named("admin_state_up")
    private Boolean adminStateUp;
    private Boolean shared;
@@ -46,11 +51,11 @@ public class Network {
    @Named("provider:network_type")
    private NetworkType networkType;
 
-   // GSON uses @ConstructorProperties and the constructor when deserializing
    @ConstructorProperties(
          { "id", "status", "subnets", "name", "admin_state_up", "shared", "tenant_id", "provider:network_type" })
    private Network(String id, NetworkStatus status, ImmutableSet<String> subnets, String name, Boolean adminStateUp,
          Boolean shared, String tenantId, NetworkType networkType) {
+      // No checkNotNulls. With Neutron, any of these properties can be left null when used in an update.
       this.id = id;
       this.status = status;
       this.subnets = subnets;
@@ -61,4 +66,149 @@ public class Network {
       this.networkType = networkType;
    }
 
+   /**
+    * Default constructor.
+    */
+   private Network() {
+   }
+
+   /**
+    * Copy constructor
+    *
+    * @param network
+    */
+   private Network(Network network) {
+      this(network.id,
+            network.status,
+            network.subnets,
+            network.name,
+            network.adminStateUp,
+            network.shared,
+            network.tenantId,
+            network.networkType);
+   }
+
+   /**
+    * @return the Builder for creating a new Router
+    */
+   public static CreateBuilder createOptions(String name) {
+      return new CreateBuilder(name);
+   }
+
+   /**
+    * @return the Builder for updating a Router
+    */
+   public static UpdateBuilder updateOptions() {
+      return new UpdateBuilder();
+   }
+
+   /**
+    * @return the id of the Network
+    */
+   @Nullable
+   public String getId() {
+      return id;
+   }
+
+   /**
+    * @return the status of the Network
+    */
+   @Nullable
+   public NetworkStatus getStatus() {
+      return status;
+   }
+
+   /**
+    * @return the subnets of the Network
+    */
+   @Nullable
+   public ImmutableSet<String> getSubnets() {
+      return subnets;
+   }
+
+   /**
+    * @return the name of the Network
+    */
+   @Nullable
+   public String getName() {
+      return name;
+   }
+
+   /**
+    * @return the adminStateUp of the Network
+    */
+   @Nullable
+   public Boolean isAdminStateUp() {
+      return adminStateUp;
+   }
+
+   /**
+    * The shared attribute can be used to create a public network, i.e.: a network which is shared with all other tenants.
+    * Control of the shared attribute could be reserved to particular users only, such as administrators.
+    * In this case, regular users trying to create a shared network will receive a 403 - Forbidden error.
+    *
+    * @return true if the network resource can be accessed by any tenant or not, false if not
+    */
+   @Nullable
+   public Boolean isShared() {
+      return shared;
+   }
+
+   /**
+    * @return the tenantId of the Network
+    */
+   @Nullable
+   public String getTenantId() {
+      return tenantId;
+   }
+
+   /**
+    * @return the networkType of the Network
+    */
+   @Nullable
+   public NetworkType getNetworkType() {
+      return networkType;
+   }
+
+   @Override
+   public int hashCode() {
+      return Objects.hashCode(id, status, subnets, name, adminStateUp, shared, tenantId, networkType);
+   }
+
+   /*
+    * Methods to get the Create and Update builders follow
+    */
+
+   @Override
+   public boolean equals(Object obj) {
+      if (this == obj) {
+         return true;
+      }
+      if (obj == null || getClass() != obj.getClass()) {
+         return false;
+      }
+      Network that = Network.class.cast(obj);
+      return Objects.equal(this.id, that.id)
+            && Objects.equal(this.status, that.status)
+            && Objects.equal(this.subnets, that.subnets)
+            && Objects.equal(this.name, that.name)
+            && Objects.equal(this.adminStateUp, that.adminStateUp)
+            && Objects.equal(this.shared, that.shared)
+            && Objects.equal(this.tenantId, that.tenantId)
+            && Objects.equal(this.networkType, that.networkType);
+   }
+
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(this)
+            .add("id", id)
+            .add("status", status)
+            .add("subnets", subnets)
+            .add("name", name)
+            .add("adminStateUp", adminStateUp)
+            .add("shared", shared)
+            .add("tenantId", tenantId)
+            .add("networkType", networkType)
+            .toString();
+   }
 }
