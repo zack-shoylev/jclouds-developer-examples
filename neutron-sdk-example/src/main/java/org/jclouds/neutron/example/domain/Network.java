@@ -212,6 +212,24 @@ public class Network {
             .toString();
    }
 
+   /*
+    * Methods to get the Create and Update builders follow
+    */
+
+   /**
+    * @return the Builder for creating a new Router
+    */
+   public static CreateBuilder createBuilder(String name) {
+      return new CreateBuilder(name);
+   }
+
+   /**
+    * @return the Builder for updating a Router
+    */
+   public static UpdateBuilder updateBuilder() {
+      return new UpdateBuilder();
+   }
+
    private abstract static class Builder<ParameterizedBuilderType> {
       protected Network network;
 
@@ -279,7 +297,6 @@ public class Network {
          return self();
       }
    }
-
    /**
     * Create and Update builders (inheriting from Builder)
     */
@@ -292,10 +309,10 @@ public class Network {
       }
 
       /**
-       * @return a CreateOptions constructed with this Builder.
+       * @return a CreateNetwork constructed with this Builder.
        */
-      public CreateOptions build() {
-         return new CreateOptions(network);
+      public CreateNetwork build() {
+         return new CreateNetwork(network);
       }
 
       protected CreateBuilder self() {
@@ -314,10 +331,10 @@ public class Network {
       }
 
       /**
-       * @return a UpdateOptions constructed with this Builder.
+       * @return a UpdateNetwork constructed with this Builder.
        */
-      public UpdateOptions build() {
-         return new UpdateOptions(network);
+      public UpdateNetwork build() {
+         return new UpdateNetwork(network);
       }
 
       protected UpdateBuilder self() {
@@ -329,11 +346,11 @@ public class Network {
     * Create and Update options - extend the domain class, passed to API update and create calls.
     * Essentially the same as the domain class. Ensure validation and safe typing.
     */
-   public static class CreateOptions extends Network {
+   public static class CreateNetwork extends Network {
       /**
        * Copy constructor
        */
-      private CreateOptions(Network network) {
+      private CreateNetwork(Network network) {
          super(network);
          checkNotNull(network.name, "name should not be null");
       }
@@ -343,11 +360,11 @@ public class Network {
     * Create and Update options - extend the domain class, passed to API update and create calls.
     * Essentially the same as the domain class. Ensure validation and safe typing.
     */
-   public static class UpdateOptions extends Network {
+   public static class UpdateNetwork extends Network  {
       /**
        * Copy constructor
        */
-      private UpdateOptions(Network network) {
+      private UpdateNetwork(Network network) {
          super(network);
       }
    }
