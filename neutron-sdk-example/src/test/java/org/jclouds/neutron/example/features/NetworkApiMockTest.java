@@ -24,14 +24,12 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 import org.jclouds.neutron.example.NeutronApi;
 import org.jclouds.neutron.example.domain.Network;
 import org.jclouds.neutron.example.domain.NetworkStatus;
 import org.jclouds.neutron.example.domain.NetworkType;
 import org.jclouds.neutron.example.internal.BaseNeutronApiMockTest;
-import org.jclouds.openstack.v2_0.options.PaginationOptions;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
 
