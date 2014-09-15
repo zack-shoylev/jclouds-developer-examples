@@ -16,8 +16,6 @@
  */
 package org.jclouds.neutron.example.domain;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.beans.ConstructorProperties;
 
 import javax.inject.Named;
@@ -37,19 +35,19 @@ import com.google.common.collect.ImmutableSet;
  */
 public class Network {
 
-   private String id;
-   private NetworkStatus status;
-   private ImmutableSet<String> subnets;
+   private final String id;
+   private final NetworkStatus status;
+   private final ImmutableSet<String> subnets;
 
-   private String name;
+   private final String name;
    @Named("admin_state_up")
-   private Boolean adminStateUp;
-   private Boolean shared;
+   private final Boolean adminStateUp;
+   private final Boolean shared;
    @Named("tenant_id")
-   private String tenantId;
+   private final String tenantId;
 
    @Named("provider:network_type")
-   private NetworkType networkType;
+   private final NetworkType networkType;
 
    @ConstructorProperties(
          { "id", "status", "subnets", "name", "admin_state_up", "shared", "tenant_id", "provider:network_type" })
@@ -64,42 +62,6 @@ public class Network {
       this.shared = shared;
       this.tenantId = tenantId;
       this.networkType = networkType;
-   }
-
-   /**
-    * Default constructor.
-    */
-   private Network() {
-   }
-
-   /**
-    * Copy constructor
-    *
-    * @param network
-    */
-   private Network(Network network) {
-      this(network.id,
-            network.status,
-            network.subnets,
-            network.name,
-            network.adminStateUp,
-            network.shared,
-            network.tenantId,
-            network.networkType);
-   }
-
-   /**
-    * @return the Builder for creating a new Router
-    */
-   public static CreateBuilder createOptions(String name) {
-      return new CreateBuilder(name);
-   }
-
-   /**
-    * @return the Builder for updating a Router
-    */
-   public static UpdateBuilder updateOptions() {
-      return new UpdateBuilder();
    }
 
    /**
@@ -212,35 +174,36 @@ public class Network {
             .toString();
    }
 
-   /*
-    * Methods to get the Create and Update builders follow
-    */
-
    /**
     * @return the Builder for creating a new Router
     */
-   public static CreateBuilder createBuilder(String name) {
-      return new CreateBuilder(name);
+   public static Builder builder(String name) {
+      return new Builder();
    }
 
    /**
-    * @return the Builder for updating a Router
+    * The "classic" Builder pattern.
+    * Provides immutability, usability, avoids complex constructors (for users).
     */
-   public static UpdateBuilder updateBuilder() {
-      return new UpdateBuilder();
-   }
+   private static class Builder {
 
-   private abstract static class Builder<ParameterizedBuilderType> {
-      protected Network network;
-
-      /**
-       * No-parameters constructor used when updating.
+      /*
+       * Good immutability comes at a cost:
+       * Not very DRY. These are the same variables as Network.
        */
-      private Builder() {
-         network = new Network();
-      }
 
-      protected abstract ParameterizedBuilderType self();
+      private String id;
+      private NetworkStatus status;
+      private ImmutableSet<String> subnets;
+
+      private String name;
+      private Boolean adminStateUp;
+      private Boolean shared;
+      private String tenantId;
+      private NetworkType networkType;
+
+      private Builder() {
+      }
 
       /**
        * Provide the name to the Network's Builder.
@@ -248,9 +211,9 @@ public class Network {
        * @return the Builder.
        * @see Network#getName()
        */
-      public ParameterizedBuilderType name(String name) {
-         network.name = name;
-         return self();
+      public Builder name(String name) {
+         this.name = name;
+         return this;
       }
 
       /**
@@ -259,9 +222,9 @@ public class Network {
        * @return the Builder.
        * @see Network#isAdminStateUp()
        */
-      public ParameterizedBuilderType adminStateUp(Boolean adminStateUp) {
-         network.adminStateUp = adminStateUp;
-         return self();
+      public Builder adminStateUp(Boolean adminStateUp) {
+         this.adminStateUp = adminStateUp;
+         return this;
       }
 
       /**
@@ -270,9 +233,9 @@ public class Network {
        * @return the Builder.
        * @see Network#isShared()
        */
-      public ParameterizedBuilderType shared(Boolean shared) {
-         network.shared = shared;
-         return self();
+      public Builder shared(Boolean shared) {
+         this.shared = shared;
+         return this;
       }
 
       /**
@@ -281,9 +244,9 @@ public class Network {
        * @return the Builder.
        * @see Network#getTenantId()
        */
-      public ParameterizedBuilderType tenantId(String tenantId) {
-         network.tenantId = tenantId;
-         return self();
+      public Builder tenantId(String tenantId) {
+         this.tenantId = tenantId;
+         return this;
       }
 
       /**
@@ -292,80 +255,24 @@ public class Network {
        * @return the Builder.
        * @see Network#getNetworkType()
        */
-      public ParameterizedBuilderType networkType(NetworkType networkType) {
-         network.networkType = networkType;
-         return self();
-      }
-   }
-   /**
-    * Create and Update builders (inheriting from Builder)
-    */
-   public static class CreateBuilder extends Builder<CreateBuilder> {
-      /**
-       * Supply required properties for creating a Builder
-       */
-      private CreateBuilder(String name) {
-         network.name = name;
-      }
-
-      /**
-       * @return a CreateNetwork constructed with this Builder.
-       */
-      public CreateNetwork build() {
-         return new CreateNetwork(network);
-      }
-
-      protected CreateBuilder self() {
+      public Builder networkType(NetworkType networkType) {
+         this.networkType = networkType;
          return this;
       }
-   }
-
-   /**
-    * Create and Update builders (inheriting from Builder)
-    */
-   public static class UpdateBuilder extends Builder<UpdateBuilder> {
-      /**
-       * Supply required properties for updating a Builder
-       */
-      private UpdateBuilder() {
-      }
 
       /**
-       * @return a UpdateNetwork constructed with this Builder.
+       * Returns a Network.
+       *
+       * Note: We want to have separate builders for CreateNetwork and UpdateNetwork, where CreateNetwork and
+       * UpdateNetwork extend Network. This does not accomplish that.
+       *
+       * This can be done with buildCreateNetwork and buildUpdateNetwork, which would be an improvement.
+       * However, there is an even better way to accomplish this.
+       * @return Network
        */
-      public UpdateNetwork build() {
-         return new UpdateNetwork(network);
-      }
-
-      protected UpdateBuilder self() {
-         return this;
-      }
-   }
-
-   /**
-    * Create and Update options - extend the domain class, passed to API update and create calls.
-    * Essentially the same as the domain class. Ensure validation and safe typing.
-    */
-   public static class CreateNetwork extends Network {
-      /**
-       * Copy constructor
-       */
-      private CreateNetwork(Network network) {
-         super(network);
-         checkNotNull(network.name, "name should not be null");
-      }
-   }
-
-   /**
-    * Create and Update options - extend the domain class, passed to API update and create calls.
-    * Essentially the same as the domain class. Ensure validation and safe typing.
-    */
-   public static class UpdateNetwork extends Network  {
-      /**
-       * Copy constructor
-       */
-      private UpdateNetwork(Network network) {
-         super(network);
+      public Network build() {
+         return new Network(id, status, subnets, name, adminStateUp,
+               shared, tenantId, networkType);
       }
    }
 }
