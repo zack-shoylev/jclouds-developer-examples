@@ -31,9 +31,6 @@ import com.google.common.collect.ImmutableSet;
 /**
  * A Neutron network
  *
- * @see <a
- * href="http://docs.openstack.org/api/openstack-network/2.0/content/Networks.html">api
- * doc</a>
  */
 public class Network {
 
