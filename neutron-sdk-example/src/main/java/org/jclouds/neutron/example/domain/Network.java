@@ -86,20 +86,6 @@ public class Network {
    }
 
    /**
-    * @return the Builder for creating a new Router
-    */
-   public static CreateBuilder createOptions(String name) {
-      return new CreateBuilder(name);
-   }
-
-   /**
-    * @return the Builder for updating a Router
-    */
-   public static UpdateBuilder updateOptions() {
-      return new UpdateBuilder();
-   }
-
-   /**
     * @return the id of the Network
     */
    @Nullable
