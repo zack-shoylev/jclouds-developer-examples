@@ -26,11 +26,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.jclouds.neutron.example.NeutronApi;
+import org.jclouds.neutron.example.domain.CreateNetwork;
 import org.jclouds.neutron.example.domain.ImmutableCreateNetwork;
+import org.jclouds.neutron.example.domain.ImmutableUpdateNetwork;
 import org.jclouds.neutron.example.domain.Network;
 import org.jclouds.neutron.example.domain.NetworkStatus;
 import org.jclouds.neutron.example.domain.NetworkType;
-import org.jclouds.neutron.example.domain.ImmutableUpdateNetwork;
 import org.jclouds.neutron.example.internal.BaseNeutronApiMockTest;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
@@ -166,11 +167,11 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         ImmutableCreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
+         CreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
-         ImmutableCreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
+         CreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
                .networkType(NetworkType.LOCAL)
                .build();
 
@@ -213,11 +214,11 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         ImmutableCreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
+         CreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
-         ImmutableCreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
+         CreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
                .networkType(NetworkType.LOCAL)
                .build();
 
