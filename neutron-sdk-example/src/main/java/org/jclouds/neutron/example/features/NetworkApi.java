@@ -29,7 +29,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.jclouds.Fallbacks;
 import org.jclouds.javax.annotation.Nullable;
+import org.jclouds.neutron.example.domain.CreateNetwork;
 import org.jclouds.neutron.example.domain.Network;
+import org.jclouds.neutron.example.domain.UpdateNetwork;
 import org.jclouds.openstack.keystone.v2_0.filters.AuthenticateRequest;
 import org.jclouds.rest.annotations.Fallback;
 import org.jclouds.rest.annotations.RequestFilters;
@@ -79,7 +81,7 @@ public interface NetworkApi {
    @Named("network:create")
    @POST
    @SelectJson("network")
-   Network create(@WrapWith("network") Network.CreateNetwork network);
+   Network create(@WrapWith("network") CreateNetwork network);
 
    /**
     * Create multiple networks
@@ -90,7 +92,7 @@ public interface NetworkApi {
    @Named("network:createBulk")
    @POST
    @SelectJson("networks")
-   FluentIterable<Network> createBulk(@WrapWith("networks") ImmutableList<Network.CreateNetwork> networks);
+   FluentIterable<Network> createBulk(@WrapWith("networks") ImmutableList<CreateNetwork> networks);
 
    /**
     * Update a network
@@ -105,7 +107,7 @@ public interface NetworkApi {
    @SelectJson("network")
    @Fallback(Fallbacks.NullOnNotFoundOr404.class)
    @Nullable
-   Network update(@PathParam("id") String id, @WrapWith("network") Network.UpdateNetwork network);
+   Network update(@PathParam("id") String id, @WrapWith("network") UpdateNetwork network);
 
    /**
     * Deletes the specified network

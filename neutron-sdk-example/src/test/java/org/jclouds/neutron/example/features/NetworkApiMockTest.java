@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.jclouds.neutron.example.NeutronApi;
+import org.jclouds.neutron.example.domain.ImmutableCreateNetwork;
 import org.jclouds.neutron.example.domain.Network;
 import org.jclouds.neutron.example.domain.NetworkStatus;
 import org.jclouds.neutron.example.domain.NetworkType;
+import org.jclouds.neutron.example.domain.ImmutableUpdateNetwork;
 import org.jclouds.neutron.example.internal.BaseNeutronApiMockTest;
 import org.jclouds.rest.ResourceNotFoundException;
 import org.testng.annotations.Test;
@@ -44,7 +46,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 @Test
 public class NetworkApiMockTest extends BaseNeutronApiMockTest {
 
-   public void testCreateNetwork() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableCreateNetwork() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_create_response.json"))));
@@ -53,7 +55,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.CreateNetwork createNetwork = Network.createBuilder("jclouds-wibble")
+         ImmutableCreateNetwork createNetwork = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
@@ -80,7 +82,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    }
 
    @Test(expectedExceptions = ResourceNotFoundException.class)
-   public void testCreateNetworkFail() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableCreateNetworkFail() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404).setBody(stringFromResource("/network_create_response.json"))));
@@ -89,7 +91,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.CreateNetwork createNetwork = Network.createBuilder("jclouds-wibble")
+         ImmutableCreateNetwork createNetwork = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
@@ -155,7 +157,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
       }
    }
 
-   public void testCreateNetworkBulk() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableCreateNetworkBulk() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_bulk_create_response.json"))));
@@ -164,11 +166,11 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.CreateNetwork createNetwork1 = Network.createBuilder("jclouds-wibble")
+         ImmutableCreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
-         Network.CreateNetwork createNetwork2 = Network.createBuilder("jclouds-wibble2")
+         ImmutableCreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
                .networkType(NetworkType.LOCAL)
                .build();
 
@@ -202,7 +204,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
    }
 
    @Test(expectedExceptions = ResourceNotFoundException.class)
-   public void testCreateNetworkBulkFail() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableCreateNetworkBulkFail() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
@@ -211,11 +213,11 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.CreateNetwork createNetwork1 = Network.createBuilder("jclouds-wibble")
+         ImmutableCreateNetwork createNetwork1 = ImmutableCreateNetwork.builder().name("jclouds-wibble")
                .networkType(NetworkType.LOCAL)
                .build();
 
-         Network.CreateNetwork createNetwork2 = Network.createBuilder("jclouds-wibble2")
+         ImmutableCreateNetwork createNetwork2 = ImmutableCreateNetwork.builder().name("jclouds-wibble2")
                .networkType(NetworkType.LOCAL)
                .build();
 
@@ -225,7 +227,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
       }
    }
 
-   public void testUpdateNetwork() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableUpdateNetwork() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(201).setBody(stringFromResource("/network_update_response.json"))));
@@ -234,7 +236,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.UpdateNetwork updateNetwork = Network.updateBuilder()
+         ImmutableUpdateNetwork updateNetwork = ImmutableUpdateNetwork.builder()
                .name("jclouds-wibble-updated")
                .networkType(NetworkType.LOCAL)
                .build();
@@ -258,7 +260,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
       }
    }
 
-   public void testUpdateNetworkFail() throws IOException, InterruptedException, URISyntaxException {
+   public void testImmutableUpdateNetworkFail() throws IOException, InterruptedException, URISyntaxException {
       MockWebServer server = mockOpenStackServer();
       server.enqueue(addCommonHeaders(new MockResponse().setBody(stringFromResource("/access.json"))));
       server.enqueue(addCommonHeaders(new MockResponse().setResponseCode(404)));
@@ -267,7 +269,7 @@ public class NetworkApiMockTest extends BaseNeutronApiMockTest {
          NeutronApi neutronApi = api(server.getUrl("/").toString(), "openstack-neutron", overrides);
          NetworkApi api = neutronApi.getNetworkApi("RegionOne");
 
-         Network.UpdateNetwork updateNetwork = Network.updateBuilder()
+         ImmutableUpdateNetwork updateNetwork = ImmutableUpdateNetwork.builder()
                .name("jclouds-wibble-updated")
                .networkType(NetworkType.LOCAL)
                .build();
